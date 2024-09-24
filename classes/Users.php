@@ -70,10 +70,10 @@ class Users
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Ingrese solo números en el campo Móvil !</div>';
       return $msg;
-    } elseif (strlen($password) < 5) {
+    } elseif (strlen($password) < 8) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> La contraseña deberá tener 6 caracteres !</div>';
+<strong>Error !</strong> La contraseña deberá tener 8 caracteres !</div>';
       return $msg;
     } elseif (!preg_match("#[0-9]+#", $password)) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -85,7 +85,7 @@ class Users
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Su contraseña debe tener al menos 1 letra !</div>';
       return $msg;
-    } elseif (filter_var($email, FILTER_VALIDATE_EMAIL === FALSE)) {
+    } elseif (filter_var($email, FILTER_VALIDATE_EMAIL) == FALSE) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Correo electrónico inválido !</div>';
@@ -109,7 +109,7 @@ class Users
       if ($result) {
         $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Success !</strong> Bien, se ha registrado correctamente !</div>';
+  <strong>Realizado !</strong> Bien, se ha registrado correctamente !</div>';
         return $msg;
       } else {
         $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -185,7 +185,7 @@ class Users
       if ($result) {
         $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Success !</strong> Bien, se ha registrado correctamente !</div>';
+  <strong>Realizado !</strong> Bien, se ha registrado correctamente !</div>';
         return $msg;
       } else {
         $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -279,7 +279,7 @@ class Users
         Session::set('username', $logResult->username);
         Session::set('logMsg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Success !</strong> Ha ingresado correctamente !</div>');
+    <strong>Realizado !</strong> Ha ingresado correctamente !</div>');
         echo "<script>location.href='index.php';</script>";
       } else {
         $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -310,7 +310,7 @@ class Users
 
 
   //
-  //   Get Single User Information By Id Method
+  //   Update Single User Information By Id Method
   public function updateUserByIdInfo($userid, $data)
   {
     $name = $data['name'];
@@ -363,7 +363,7 @@ class Users
         echo "<script>location.href='index.php';</script>";
         Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Success !</strong> Bien, su información fue actualizada correctamente !</div>');
+          <strong>Realizado !</strong> Bien, su información fue actualizada correctamente !</div>');
       } else {
         echo "<script>location.href='index.php';</script>";
         Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -424,7 +424,7 @@ class Users
   }
 
 
-  // User Deactivated By Admin
+  // User Activated By Admin
   public function userActiveByAdmin($active)
   {
     $sql = "UPDATE tbl_users SET
@@ -439,7 +439,7 @@ class Users
       echo "<script>location.href='index.php';</script>";
       Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Success !</strong> Cuenta de usuario activada correctamente !</div>');
+          <strong>Realizado !</strong> Cuenta de usuario activada correctamente !</div>');
     } else {
       echo "<script>location.href='index.php';</script>";
       Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -480,7 +480,7 @@ class Users
     if ($old_pass == "" || $new_pass == "") {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Error !</strong> Contraeña no puede estar vacía !</div>';
+  <strong>Error !</strong> Contraseña no puede estar vacía !</div>';
       return $msg;
     } elseif (strlen($new_pass) < 6) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -511,7 +511,7 @@ class Users
         echo "<script>location.href='index.php';</script>";
         Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Success !</strong> Bien, la contraseña fue modificado correctamente !</div>');
+            <strong>Realizado !</strong> Bien, la contraseña fue modificada correctamente !</div>');
       } else {
         $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
