@@ -48,6 +48,7 @@ if (isset($userAdd)) {
                 <div class="form-group">
                   <label for="password">Contraseña</label>
                   <input type="password" name="password" class="form-control">
+                  <input type="hidden" name="roleid" value="3" class="form-control">
                 </div>
                 <div class="form-group">
                   <div class="form-group">

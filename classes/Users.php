@@ -146,7 +146,7 @@ class Users
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Ingrese solo números en el campo Móvil !</div>';
       return $msg;
-    } elseif (strlen($password) < 5) {
+    } elseif (strlen($password) < 8) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> La contraseña deberá tener 6 caracteres !</div>';
