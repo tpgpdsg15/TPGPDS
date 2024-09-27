@@ -336,7 +336,7 @@ class Users
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <strong>Error !</strong> Ingrese dolo números en el campo Móvil !</div>';
       return $msg;
-    } elseif (filter_var($email, FILTER_VALIDATE_EMAIL === FALSE)) {
+    } elseif (filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
   <strong>Error !</strong> Casilla de correo inválida !</div>';
@@ -386,7 +386,7 @@ class Users
     if ($result) {
       $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Success !</strong> La cuenta de usuario fue borrada correctamente !</div>';
+    <strong>Realizado !</strong> La cuenta de usuario fue borrada correctamente !</div>';
       return $msg;
     } else {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -412,7 +412,7 @@ class Users
       echo "<script>location.href='index.php';</script>";
       Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Success !</strong> Usuario desactivado correctamente !</div>');
+          <strong>Realizado !</strong> Usuario desactivado correctamente !</div>');
     } else {
       echo "<script>location.href='index.php';</script>";
       Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
