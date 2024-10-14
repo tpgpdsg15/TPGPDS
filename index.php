@@ -97,7 +97,7 @@ if (isset($username)) {
                         } elseif ($value->roleid == '2') {
                           echo "<span class='badge badge-lg badge-dark text-white'>Editor</span>";
                         }elseif ($value->roleid == '3') {
-                            echo "<span class='badge badge-lg badge-dark text-white'>User Only</span>";
+                            echo "<span class='badge badge-lg badge-dark text-white'>Solo usuario</span>";
                         } ?></td>
                         <td><?php echo $value->email; ?></td>
 
@@ -134,7 +134,7 @@ if (isset($username)) {
                        <?php if (Session::get("id") == $value->id) {
                          echo "disabled";
                        } ?>
-                                btn-sm " href="?active=<?php echo $value->id;?>">Activo</a>
+                                btn-sm " href="?active=<?php echo $value->id;?>">Activar</a>
                              <?php } ?>
 
 

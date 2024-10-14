@@ -74,7 +74,7 @@ INSERT INTO `tbl_users` (`id`, `name`, `username`, `email`, `password`, `mobile`
 (18, 'Maruf Jaman', 'Maruf', 'maruf@gmail.com', '188000e1f0fb4075ae1c659697b96296f982cdc4', '01717090233', 2, 0, '2020-03-13 05:09:18', '2020-03-13 05:09:18'),
 (19, 'Humayun ', 'Munna', 'munna@gmail.com', '66c3241204bea40578eb993f41f7c4b1ab982dab', '01717090233', 3, 0, '2020-03-13 05:09:49', '2020-03-13 05:09:49'),
 (20, 'Rased ', 'Rashed', 'rashed@gmail.com', '188000e1f0fb4075ae1c659697b96296f982cdc4', '01717090233', 2, 1, '2020-03-13 05:10:24', '2020-03-13 05:10:24'),
-(21, 'Millon ', 'Millon', 'millon@gmail.com', '05c19fb114728eabf85f47c858914ca42ddd2dae', '01717090233', 1, 1, '2020-03-13 05:11:02', '2020-03-13 05:11:02');
+(21, 'Admin ', 'Admin', 'admin@gmail.com', '188000e1f0fb4075ae1c659697b96296f982cdc4', '01717090233', 1, 0, '2020-03-13 05:11:02', '2020-03-13 05:11:02');
 
 --
 -- Indexes for dumped tables

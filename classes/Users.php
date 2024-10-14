@@ -102,7 +102,8 @@ class Users
       $stmt->bindValue(':name', $name);
       $stmt->bindValue(':username', $username);
       $stmt->bindValue(':email', $email);
-      $stmt->bindValue(':password', SHA1($password));
+      $stmt->bindValue(':password', SHA1($password)); 
+    /*  $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));*/
       $stmt->bindValue(':mobile', $mobile);
       $stmt->bindValue(':roleid', $roleid);
       $result = $stmt->execute();
@@ -149,7 +150,7 @@ class Users
     } elseif (strlen($password) < 8) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> La contraseña deberá tener 6 caracteres !</div>';
+<strong>Error !</strong> La contraseña deberá tener 8 caracteres !</div>';
       return $msg;
     } elseif (!preg_match("#[0-9]+#", $password)) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -179,6 +180,7 @@ class Users
       $stmt->bindValue(':username', $username);
       $stmt->bindValue(':email', $email);
       $stmt->bindValue(':password', SHA1($password));
+     /* $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));*/
       $stmt->bindValue(':mobile', $mobile);
       $stmt->bindValue(':roleid', $roleid);
       $result = $stmt->execute();
@@ -212,6 +214,7 @@ class Users
   public function userLoginAutho($email, $password)
   {
     $password = SHA1($password);
+  /*  $password = password_hash($password, PASSWORD_DEFAULT);*/
     $sql = "SELECT * FROM tbl_users WHERE email = :email and password = :password LIMIT 1";
     $stmt = $this->db->pdo->prepare($sql);
     $stmt->bindValue(':email', $email);
@@ -334,7 +337,7 @@ class Users
     } elseif (filter_var($mobile, FILTER_SANITIZE_NUMBER_INT) == FALSE) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Ingrese dolo números en el campo Móvil !</div>';
+    <strong>Error !</strong> Ingrese solo números en el campo Móvil !</div>';
       return $msg;
     } elseif (filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -444,7 +447,7 @@ class Users
       echo "<script>location.href='index.php';</script>";
       Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Dato no activado !</div>');
+    <strong>Error !</strong> Usuario no activado !</div>');
     }
   }
 
@@ -455,6 +458,7 @@ class Users
   public function CheckOldPassword($userid, $old_pass)
   {
     $old_pass = SHA1($old_pass);
+  /*  $old_pass = password_hash($old_pass, PASSWORD_DEFAULT);*/
     $sql = "SELECT password FROM tbl_users WHERE password = :password AND id =:id";
     $stmt = $this->db->pdo->prepare($sql);
     $stmt->bindValue(':password', $old_pass);
@@ -497,6 +501,7 @@ class Users
       return $msg;
     } else {
       $new_pass = SHA1($new_pass);
+    /*  $new_pass = password_hash($new_pass, PASSWORD_DEFAULT);*/
       $sql = "UPDATE tbl_users SET
 
             password=:password
