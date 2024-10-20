@@ -23,7 +23,7 @@ if (!$getUinfo) {
 
 <style>
     .profile-container {
-        max-width: 600px;
+        max-width: 800px;
         margin: 50px auto;
         background-color: white;
         border-radius: 8px;
@@ -31,35 +31,52 @@ if (!$getUinfo) {
         padding: 30px;
     }
     .profile-header {
-        color: #3498db;
-        margin-bottom: 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #ecf0f1;
+    }
+    .profile-title {
+        color: #3498db;
+        font-size: 24px;
+        font-weight: 700;
     }
     .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
     .form-group label {
         display: block;
-        margin-bottom: 5px;
-        color: #333;
-        font-weight: bold;
+        margin-bottom: 8px;
+        color: #34495e;
+        font-weight: 500;
     }
-    .form-group input, .form-group select {
+    .form-control {
         width: 100%;
         padding: 10px;
-        border: 1px solid #ddd;
+        border: 2px solid #ecf0f1;
         border-radius: 4px;
         font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+    .form-control:focus {
+        border-color: #3498db;
+        outline: none;
     }
     .btn {
         padding: 10px 20px;
-        border: none;
         border-radius: 4px;
-        cursor: pointer;
         font-size: 16px;
-        transition: background-color 0.3s ease;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+    .btn:hover {
+        opacity: 0.8;
+        transform: translateY(-2px);
     }
     .btn-primary {
         background-color: #3498db;
@@ -69,34 +86,35 @@ if (!$getUinfo) {
         background-color: #2ecc71;
         color: white;
     }
-    .btn:hover {
-        opacity: 0.8;
-    }
     .flash-message {
         background-color: #e74c3c;
         color: white;
-        padding: 10px;
+        padding: 15px;
         border-radius: 4px;
         margin-bottom: 20px;
         text-align: center;
+    }
+    .success-message {
+        background-color: #2ecc71;
     }
 </style>
 
 <div class="profile-container">
     <div class="profile-header">
-        <h3>Perfil de usuario</h3>
+        <h2 class="profile-title">Perfil de usuario</h2>
         <a href="index.php" class="btn btn-primary">Atrás</a>
     </div>
 
     <?php
     if (isset($updateUser)) {
-        echo '<div class="flash-message">' . $updateUser . '</div>';
+        $messageClass = (strpos($updateUser, 'exitosamente') !== false) ? 'success-message' : '';
+        echo '<div class="flash-message ' . $messageClass . '">' . $updateUser . '</div>';
     }
     ?>
 
     <form action="" method="POST">
         <div class="form-group">
-            <label for="name">Su nombre</label>
+            <label for="name">Nombre</label>
             <input type="text" name="name" value="<?php echo $getUinfo->name; ?>" class="form-control">
         </div>
         <div class="form-group">
@@ -104,7 +122,7 @@ if (!$getUinfo) {
             <input type="text" name="username" value="<?php echo $getUinfo->username; ?>" class="form-control">
         </div>
         <div class="form-group">
-            <label for="email">Casilla de correo</label>
+            <label for="email">Correo electrónico</label>
             <input type="email" id="email" name="email" value="<?php echo $getUinfo->email; ?>" class="form-control">
         </div>
         <div class="form-group">
@@ -118,7 +136,7 @@ if (!$getUinfo) {
                 <select class="form-control" name="roleid" id="roleid">
                     <option value="1" <?php echo ($getUinfo->roleid == '1') ? 'selected' : ''; ?>>Admin</option>
                     <option value="2" <?php echo ($getUinfo->roleid == '2') ? 'selected' : ''; ?>>Editor</option>
-                    <option value="3" <?php echo ($getUinfo->roleid == '3') ? 'selected' : ''; ?>>Solo usuario</option>
+                    <option value="3" <?php echo ($getUinfo->roleid == '3') ? 'selected' : ''; ?>>Usuario</option>
                 </select>
             </div>
         <?php } else { ?>

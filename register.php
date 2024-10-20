@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
 <style>
     .register-container {
-        max-width: 600px;
+        max-width: 500px;
         margin: 50px auto;
         background-color: white;
         border-radius: 8px;
@@ -17,36 +17,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
         padding: 30px;
     }
     .register-header {
-        color: #3498db;
         text-align: center;
         margin-bottom: 30px;
-        font-size: 24px;
+    }
+    .register-title {
+        color: #3498db;
+        font-size: 28px;
+        font-weight: 700;
     }
     .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
     .form-group label {
         display: block;
-        margin-bottom: 5px;
-        color: #333;
-        font-weight: bold;
+        margin-bottom: 8px;
+        color: #34495e;
+        font-weight: 500;
     }
-    .form-group input {
+    .form-control {
         width: 100%;
         padding: 10px;
-        border: 1px solid #ddd;
+        border: 2px solid #ecf0f1;
         border-radius: 4px;
         font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+    .form-control:focus {
+        border-color: #3498db;
+        outline: none;
     }
     .btn-register {
+        width: 100%;
+        padding: 12px;
         background-color: #3498db;
         color: white;
         border: none;
-        padding: 12px 0;
         border-radius: 4px;
+        font-size: 18px;
+        font-weight: 500;
         cursor: pointer;
-        width: 100%;
-        font-size: 16px;
         transition: background-color 0.3s ease;
     }
     .btn-register:hover {
@@ -55,14 +64,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     .flash-message {
         background-color: #e74c3c;
         color: white;
-        padding: 10px;
+        padding: 15px;
         border-radius: 4px;
         margin-bottom: 20px;
         text-align: center;
-}
- .password-requirements {
+    }
+    .success-message {
+        background-color: #2ecc71;
+    }
+    .password-requirements {
         font-size: 14px;
-        color: #666;
+        color: #7f8c8d;
         margin-top: 5px;
     }
     .error-message {
@@ -70,45 +82,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
         font-size: 14px;
         margin-top: 5px;
     }
-		.success-message {
-    background-color: #2ecc71;
-    color: white;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    text-align: center;
-}
 </style>
+
 <div class="register-container">
-    <h3 class="register-header">Registro de usuario</h3>
-	  <?php
+    <div class="register-header">
+        <h2 class="register-title">Registro de usuario</h2>
+    </div>
+
+    <?php
     if (isset($register)) {
-        $messageClass = (strpos($register, 'exitosamente') !== false) ? 'success-message' : 'error-message';
-        echo "<div class='flash-message $messageClass'>$register</div>";
+        $messageClass = (strpos($register, 'exitosamente') !== false) ? 'success-message' : '';
+        echo '<div class="flash-message ' . $messageClass . '">' . $register . '</div>';
     }
     ?>
+
     <form action="" method="post" id="registerForm">
         <div class="form-group">
-            <label for="name">Su nombre</label>
-            <input type="text" name="name" id="name" required>
+            <label for="name">Nombre</label>
+            <input type="text" name="name" class="form-control" id="name" required>
         </div>
         <div class="form-group">
             <label for="username">Usuario</label>
-            <input type="text" name="username" id="username" required>
+            <input type="text" name="username" class="form-control" id="username" required>
             <span id="username-error" class="error-message"></span>
         </div>
         <div class="form-group">
-            <label for="email">Casilla de correo</label>
-            <input type="email" name="email" id="email" required>
+            <label for="email">Correo electrónico</label>
+            <input type="email" name="email" class="form-control" id="email" required>
             <span id="email-error" class="error-message"></span>
         </div>
         <div class="form-group">
             <label for="mobile">Número móvil</label>
-            <input type="text" name="mobile" id="mobile" required>
+            <input type="text" name="mobile" class="form-control" id="mobile" required>
         </div>
         <div class="form-group">
             <label for="password">Contraseña</label>
-            <input type="password" name="password" id="password" required>
+            <input type="password" name="password" class="form-control" id="password" required>
             <div class="password-requirements">
                 La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, un número y un símbolo.
             </div>

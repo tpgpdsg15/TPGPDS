@@ -37,25 +37,27 @@ if (isset($activeId)) {
 ?>
 
 <style>
-    body {
-        background-color: #ecf0f1;
-        font-family: 'Roboto', Arial, sans-serif;
-        color: #333;
-        padding: 20px;
-    }
     .dashboard {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    .welcome-banner {
-        background-color: #3498db;
-        color: white;
-        padding: 20px;
+        background-color: #fff;
         border-radius: 8px;
-        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+    .dashboard-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 30px;
+    }
+    .dashboard-title {
+        color: #3498db;
+        font-size: 24px;
+        font-weight: 700;
+    }
+    .user-welcome {
+        font-size: 16px;
+        color: #34495e;
     }
     .user-grid {
         display: grid;
@@ -63,51 +65,66 @@ if (isset($activeId)) {
         gap: 20px;
     }
     .user-card {
-        background-color: white;
+        background-color: #f8f9fa;
         border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         padding: 20px;
-        transition: transform 0.3s ease;
+        transition: box-shadow 0.3s ease;
     }
     .user-card:hover {
-        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     }
     .user-name {
-        font-size: 1.2em;
-        font-weight: bold;
-        margin-bottom: 10px;
+        font-size: 18px;
+        font-weight: 700;
         color: #3498db;
+        margin-bottom: 10px;
     }
     .user-info {
+        font-size: 14px;
+        color: #34495e;
         margin-bottom: 15px;
     }
     .user-actions {
         display: flex;
-        justify-content: flex-start;
         flex-wrap: wrap;
+        gap: 10px;
     }
     .btn {
-        padding: 8px 12px;
-        border-radius: 4px;
-        text-decoration: none;
-        color: white;
-        font-size: 0.9em;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        transition: background-color 0.3s ease;
-    }
-    .btn-view { background-color: #3498db; }
-    .btn-edit { background-color: #2ecc71; }
-    .btn-delete { background-color: #e74c3c; }
-    .btn-deactivate { background-color: #f39c12; }
-    .btn-activate { background-color: #95a5a6; }
-    .btn:hover { opacity: 0.8; }
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+}
+.btn:hover {
+    opacity: 0.8;
+    transform: translateY(-2px);
+}
+.btn-view { 
+    background-color: #3498db; 
+    color: white; 
+}
+.btn-edit { 
+    background-color: #2980b9; 
+    color: white; 
+}
+.btn-delete { 
+    background-color: #e74c3c; 
+    color: white; 
+}
+.btn-deactivate, .btn-activate { 
+    background-color: #f39c12; 
+    color: white; 
+}
     .badge {
         display: inline-block;
-        padding: 5px 10px;
+        padding: 4px 8px;
         border-radius: 20px;
-        font-size: 0.8em;
-        margin-bottom: 5px;
+        font-size: 12px;
+        font-weight: 500;
+        margin-right: 5px;
     }
     .badge-role { background-color: #34495e; color: white; }
     .badge-active { background-color: #2ecc71; color: white; }
@@ -115,19 +132,10 @@ if (isset($activeId)) {
 </style>
 
 <div class="dashboard">
-    <div class="welcome-banner">
-        <h1><i class="fas fa-users mr-2"></i>Listado de usuarios</h1>
-        <div>
-            Bienvenido! <strong>
-                <span class="badge badge-light">
-                    <?php
-                    $username = Session::get('username');
-                    if (isset($username)) {
-                        echo $username;
-                    }
-                    ?>
-                </span>
-            </strong>
+    <div class="dashboard-header">
+        <h2 class="dashboard-title">Listado de usuarios</h2>
+        <div class="user-welcome">
+            Bienvenido, <strong><?php echo Session::get('username'); ?></strong>
         </div>
     </div>
 
@@ -151,7 +159,7 @@ if (isset($activeId)) {
                         } elseif ($value->roleid == '2') {
                             echo "Editor";
                         } elseif ($value->roleid == '3') {
-                            echo "Solo usuario";
+                            echo "Usuario";
                         }
                         ?>
                     </span>
@@ -159,35 +167,33 @@ if (isset($activeId)) {
                         <?php echo $value->isActive == '0' ? 'Activo' : 'Inactivo'; ?>
                     </span>
                 </div>
-                <div class="user-actions">
-                    <?php if (Session::get("roleid") == '1') { ?>
-                        <a class="btn btn-view" href="profile.php?id=<?php echo $value->id; ?>">Vista</a>
-                        <a class="btn btn-edit" href="profile.php?id=<?php echo $value->id; ?>">Editar</a>
-                        <a onclick="return confirm('Seguro quiere borrarlo ?')" class="btn btn-delete <?php if (Session::get("id") == $value->id) echo "disabled"; ?>" href="?remove=<?php echo $value->id; ?>">Remover</a>
-                        <?php if ($value->isActive == '0') { ?>
-                            <a onclick="return confirm('Seguro quiere desactivarlo ?')" class="btn btn-deactivate <?php if (Session::get("id") == $value->id) echo "disabled"; ?>" href="?deactive=<?php echo $value->id; ?>">Deshabilitar</a>
-                        <?php } elseif ($value->isActive == '1') { ?>
-                            <a onclick="return confirm('Seguro quiere activarlo ?')" class="btn btn-activate <?php if (Session::get("id") == $value->id) echo "disabled"; ?>" href="?active=<?php echo $value->id; ?>">Activar</a>
-                        <?php } ?>
-                    <?php } elseif (Session::get("id") == $value->id && Session::get("roleid") == '2') { ?>
-                        <a class="btn btn-view" href="profile.php?id=<?php echo $value->id; ?>">Vista</a>
-                        <a class="btn btn-edit" href="profile.php?id=<?php echo $value->id; ?>">Editar</a>
-                    <?php } elseif (Session::get("roleid") == '2') { ?>
-                        <a class="btn btn-view <?php if ($value->roleid == '1') echo "disabled"; ?>" href="profile.php?id=<?php echo $value->id; ?>">Vista</a>
-                        <a class="btn btn-edit <?php if ($value->roleid == '1') echo "disabled"; ?>" href="profile.php?id=<?php echo $value->id; ?>">Editar</a>
-                    <?php } elseif (Session::get("id") == $value->id && Session::get("roleid") == '3') { ?>
-                        <a class="btn btn-view" href="profile.php?id=<?php echo $value->id; ?>">Vista</a>
-                        <a class="btn btn-edit" href="profile.php?id=<?php echo $value->id; ?>">Edit</a>
-                    <?php } else { ?>
-                        <a class="btn btn-view <?php if ($value->roleid == '1') echo "disabled"; ?>" href="profile.php?id=<?php echo $value->id; ?>">Vista</a>
-                    <?php } ?>
-                </div>
+            <div class="user-actions">
+    <?php if (Session::get("roleid") == '1') { ?>
+        <a class="btn btn-view" href="profile.php?id=<?php echo $value->id; ?>">Ver</a>
+        <a class="btn btn-edit" href="profile.php?id=<?php echo $value->id; ?>">Editar</a>
+        <a onclick="return confirm('¿Está seguro de que desea eliminar?')" class="btn btn-delete <?php if (Session::get("id") == $value->id) echo "disabled"; ?>" href="?remove=<?php echo $value->id; ?>">Eliminar</a>
+        <?php if ($value->isActive == '0') { ?>
+            <a onclick="return confirm('¿Está seguro de que desea desactivar?')" class="btn btn-deactivate <?php if (Session::get("id") == $value->id) echo "disabled"; ?>" href="?deactive=<?php echo $value->id; ?>">Desactivar</a>
+        <?php } elseif ($value->isActive == '1') { ?>
+            <a onclick="return confirm('¿Está seguro de que desea activar?')" class="btn btn-activate <?php if (Session::get("id") == $value->id) echo "disabled"; ?>" href="?active=<?php echo $value->id; ?>">Activar</a>
+        <?php } ?>
+    <?php } elseif (Session::get("id") == $value->id && Session::get("roleid") == '2') { ?>
+        <a class="btn btn-view" href="profile.php?id=<?php echo $value->id; ?>">Ver</a>
+        <a class="btn btn-edit" href="profile.php?id=<?php echo $value->id; ?>">Editar</a>
+    <?php } elseif (Session::get("roleid") == '2') { ?>
+        <a class="btn btn-view <?php if ($value->roleid == '1') echo "disabled"; ?>" href="profile.php?id=<?php echo $value->id; ?>">Ver</a>
+    <?php } elseif (Session::get("id") == $value->id && Session::get("roleid") == '3') { ?>
+        <a class="btn btn-view" href="profile.php?id=<?php echo $value->id; ?>">Ver</a>
+        <a class="btn btn-edit" href="profile.php?id=<?php echo $value->id; ?>">Editar</a>
+    <?php } else { ?>
+        <a class="btn btn-view <?php if ($value->roleid == '1') echo "disabled"; ?>" href="profile.php?id=<?php echo $value->id; ?>">Ver</a>
+    <?php } ?>
+</div>
+                
             </div>
         <?php }
         } else { ?>
-            <div class="user-card">
-                <p>No hay usuario disponible ahora !</p>
-            </div>
+            <p>No hay usuarios disponibles en este momento.</p>
         <?php } ?>
     </div>
 </div>
