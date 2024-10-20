@@ -1,28 +1,20 @@
-<div class="well card-footer">
-  <p>Sitio web: https://nuestrositio.com/
-      <span class="float-right">Encuéntrenos: https://www.facebook.com/nuestrositio/</span>
-  </p>
-</div>
+</div> <!-- Cerramos el container del header-->
 
-
-
-
-  </body>
-
-
-
-
-  <!-- Jquery script -->
-  <script src="assets/jquery.min.js"></script>
-  <script src="assets/bootstrap.min.js"></script>
-  <script src="assets/jquery.dataTables.min.js"></script>
-  <script src="assets/dataTables.bootstrap4.min.js"></script>
-  <script>
-      $(document).ready(function () {
-          $("#flash-msg").delay(7000).fadeOut("slow");
-      });
-      $(document).ready(function() {
-          $('#example').DataTable();
-      } );
-  </script>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Pagina web: <a href="https://www.unso.edu.ar/es/" target="_blank">UNSO</a></p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#flash-msg").delay(7000).fadeOut("slow");
+        });
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+    </script>
+<link rel="stylesheet" href="style.css">
+</body>
 </html>
