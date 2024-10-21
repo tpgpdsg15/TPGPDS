@@ -25,7 +25,15 @@ class Users
     return date('Y-m-d H:i:s', $strtime);
   }
 
-
+// Check Unique Username Method
+public function checkUnique($field, $value) {
+    $sql = "SELECT COUNT(*) as count FROM tbl_users WHERE $field = :value";
+    $stmt = $this->db->pdo->prepare($sql);
+    $stmt->bindValue(':value', $value);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['count'] == 0;
+}
 
   // Check Exist Email Address Method
   public function checkExistEmail($email)
@@ -41,85 +49,50 @@ class Users
     }
   }
 
+public function userRegistration($data){
+    $name = $data['name'] ?? '';
+    $username = $data['username'] ?? '';
+    $email = $data['email'] ?? '';
+    $mobile = $data['mobile'] ?? '';
+    $roleid = $data['roleid'] ?? '';
+    $password = $data['password'] ?? '';
 
-
-  // User Registration Method
-  public function userRegistration($data)
-  {
-    $name = $data['name'];
-    $username = $data['username'];
-    $email = $data['email'];
-    $mobile = $data['mobile'];
-    $roleid = $data['roleid'];
-    $password = $data['password'];
-
-    $checkEmail = $this->checkExistEmail($email);
-
-    if ($name == "" || $username == "" || $email == "" || $mobile == "" || $password == "") {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Por favor, El campo Registro de Usuario no puede estar vacío !</div>';
-      return $msg;
-    } elseif (strlen($username) < 3) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Nombre de usuario es muy corto, tiene menos de 3 caracteres !</div>';
-      return $msg;
-    } elseif (filter_var($mobile, FILTER_SANITIZE_NUMBER_INT) == FALSE) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Ingrese solo números en el campo Móvil !</div>';
-      return $msg;
-    } elseif (strlen($password) < 8) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> La contraseña deberá tener 8 caracteres !</div>';
-      return $msg;
-    } elseif (!preg_match("#[0-9]+#", $password)) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Su contraseña debe tener al menos 1 número !</div>';
-      return $msg;
-    } elseif (!preg_match("#[a-z]+#", $password)) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Su contraseña debe tener al menos 1 letra !</div>';
-      return $msg;
-    } elseif (filter_var($email, FILTER_VALIDATE_EMAIL) == FALSE) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Correo electrónico inválido !</div>';
-      return $msg;
-    } elseif ($checkEmail == TRUE) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<strong>Error !</strong> Esa casilla de correo ya existe, intente con otra... !</div>';
-      return $msg;
-    } else {
-
-      $sql = "INSERT INTO tbl_users(name, username, email, password, mobile, roleid) VALUES(:name, :username, :email, :password, :mobile, :roleid)";
-      $stmt = $this->db->pdo->prepare($sql);
-      $stmt->bindValue(':name', $name);
-      $stmt->bindValue(':username', $username);
-      $stmt->bindValue(':email', $email);
-      $stmt->bindValue(':password', SHA1($password)); 
-    /*  $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));*/
-      $stmt->bindValue(':mobile', $mobile);
-      $stmt->bindValue(':roleid', $roleid);
-      $result = $stmt->execute();
-      if ($result) {
-        $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
-  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Realizado !</strong> Bien, se ha registrado correctamente !</div>';
-        return $msg;
-      } else {
-        $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Error !</strong> Algo salió mal !</div>';
-        return $msg;
-      }
+    if(empty($name) || empty($username) || empty($email) || empty($mobile) || empty($password)) {
+        return "Todos los campos son obligatorios.";
     }
-  }
+
+    $passwordRegex = '/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/';
+    if (!preg_match($passwordRegex, $password)) {
+        return "La contraseña no cumple con los requisitos de complejidad.";
+    }
+
+    if (!$this->checkUnique('username', $username)) {
+        return "El nombre de usuario ya está en uso.";
+    }
+
+    if (!$this->checkUnique('email', $email)) {
+        return "El correo electrónico ya está en uso.";
+    }
+
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+    
+    $sql = "INSERT INTO tbl_users(name, username, email, password, mobile, roleid) VALUES(:name, :username, :email, :password, :mobile, :roleid)";
+    $stmt = $this->db->pdo->prepare($sql);
+    $stmt->bindValue(':name', $name);
+    $stmt->bindValue(':username', $username);
+    $stmt->bindValue(':email', $email);
+    $stmt->bindValue(':password', $password_hash);
+    $stmt->bindValue(':mobile', $mobile);
+    $stmt->bindValue(':roleid', $roleid);
+    $result = $stmt->execute();
+
+    if ($result) {
+        return "Usuario registrado exitosamente.";
+    } else {
+        return "Hubo un problema al registrar el usuario. Por favor, intente nuevamente.";
+    }
+}
+
   // Add New User By Admin
   public function addNewUserByAdmin($data)
   {
@@ -233,66 +206,29 @@ class Users
     return $stmt->fetch(PDO::FETCH_OBJ);
   }
 
-
-
-
-  // User Login Authotication Method
-  public function userLoginAuthotication($data)
-  {
-    $email = $data['email'];
+public function userLoginAuthotication($data){
+    $usernameOrEmail = $data['username'];
     $password = $data['password'];
 
+    $sql = "SELECT * FROM tbl_users WHERE username = :usernameOrEmail OR email = :usernameOrEmail LIMIT 1";
+    $stmt = $this->db->pdo->prepare($sql);
+    $stmt->bindValue(':usernameOrEmail', $usernameOrEmail);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $checkEmail = $this->checkExistEmail($email);
-
-    if ($email == "" || $password == "") {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Error !</strong> Casilla de correo o Cantraseña no pueden estar vacíos !</div>';
-      return $msg;
-    } elseif (filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Error !</strong> Casilla de correo inválida !</div>';
-      return $msg;
-    } elseif ($checkEmail == FALSE) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Error !</strong> Esa casilla no está registrada, por favor utilice la casilla o contraseña correcta !</div>';
-      return $msg;
-    } else {
-
-
-      $logResult = $this->userLoginAutho($email, $password);
-      $chkActive = $this->CheckActiveUser($email);
-
-      if ($chkActive == TRUE) {
-        $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Lo sentímos, sucuenta está desactivada, contátenos !</div>';
-        return $msg;
-      } elseif ($logResult) {
-
+    if ($user && password_verify($password, $user['password'])) {
         Session::init();
-        Session::set('login', TRUE);
-        Session::set('id', $logResult->id);
-        Session::set('roleid', $logResult->roleid);
-        Session::set('name', $logResult->name);
-        Session::set('email', $logResult->email);
-        Session::set('username', $logResult->username);
-        Session::set('logMsg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Realizado !</strong> Ha ingresado correctamente !</div>');
-        echo "<script>location.href='index.php';</script>";
-      } else {
-        $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Casilla o contraseña incorrectas !</div>';
-        return $msg;
-      }
+        Session::set('login', true);
+        Session::set('id', $user['id']);
+        Session::set('roleid', $user['roleid']);
+        Session::set('name', $user['name']);
+        Session::set('username', $user['username']);
+        Session::set('logMsg', "Acceso exitoso!!");
+        return true;
+    } else {
+        return false;
     }
-  }
-
+}
 
 
   // Get Single User Information By Id Method
@@ -474,55 +410,42 @@ class Users
 
 
   // Change User pass By Id
-  public  function changePasswordBysingelUserId($userid, $data)
-  {
+public function changePasswordBysingelUserId($userid, $data, $isAdmin) {
+    error_log("Password change attempt for user ID: $userid");
+    error_log("Is admin: " . ($isAdmin ? "Yes" : "No"));
 
-    $old_pass = $data['old_password'];
-    $new_pass = $data['new_password'];
+    $new_password = $data['new_password'];
+    $confirm_password = $data['confirm_password'];
 
+    error_log("New password: $new_password");
+    error_log("Confirm password: $confirm_password");
 
-    if ($old_pass == "" || $new_pass == "") {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Error !</strong> Contraseña no puede estar vacía !</div>';
-      return $msg;
-    } elseif (strlen($new_pass) < 6) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Error !</strong> La nueva contraseña debe contener al menos 6 caracteres !</div>';
-      return $msg;
+    if ($new_password != $confirm_password) {
+        error_log("Passwords do not match");
+        return "Las nuevas contraseñas no coinciden.";
     }
 
-    $oldPass = $this->CheckOldPassword($userid, $old_pass);
-    if ($oldPass == FALSE) {
-      $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-     <strong>Error !</strong> La contraseña anterior no coincide !</div>';
-      return $msg;
+    $passwordRegex = '/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/';
+    if (!preg_match($passwordRegex, $new_password)) {
+        error_log("Password does not meet complexity requirements");
+        return "La nueva contraseña no cumple con los requisitos de complejidad.";
+    }
+
+    $new_password_hash = password_hash($new_password, PASSWORD_DEFAULT);
+    error_log("New password hash: $new_password_hash");
+
+    $sql = "UPDATE tbl_users SET password = :password WHERE id = :id";
+    $stmt = $this->db->pdo->prepare($sql);
+    $stmt->bindValue(':password', $new_password_hash);
+    $stmt->bindValue(':id', $userid);
+    $result = $stmt->execute();
+
+    if ($result) {
+        error_log("Password updated successfully");
+        return "La contraseña ha sido cambiada exitosamente.";
     } else {
-      $new_pass = SHA1($new_pass);
-    /*  $new_pass = password_hash($new_pass, PASSWORD_DEFAULT);*/
-      $sql = "UPDATE tbl_users SET
-
-            password=:password
-            WHERE id = :id";
-
-      $stmt = $this->db->pdo->prepare($sql);
-      $stmt->bindValue(':password', $new_pass);
-      $stmt->bindValue(':id', $userid);
-      $result =   $stmt->execute();
-
-      if ($result) {
-        echo "<script>location.href='index.php';</script>";
-        Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Realizado !</strong> Bien, la contraseña fue modificada correctamente !</div>');
-      } else {
-        $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong>Error !</strong> La contraseña no pudo ser modificada !</div>';
-        return $msg;
-      }
+        error_log("Error updating password");
+        return "Ha ocurrido un error al cambiar la contraseña.";
     }
-  }
+}
 }
