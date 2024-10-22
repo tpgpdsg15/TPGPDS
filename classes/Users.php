@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 include 'lib/Database.php';
 include_once 'lib/Session.php';
@@ -160,7 +160,7 @@ public function userRegistration($data){
       if ($result) {
         $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Realizado !</strong> Bien, se ha registrado correctamente !</div>';
+  <strong>Realizado !</strong> Se ha registrado correctamente !</div>';
         return $msg;
       } else {
         $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -302,7 +302,7 @@ public function userLoginAuthotication($data){
         echo "<script>location.href='index.php';</script>";
         Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Realizado !</strong> Bien, su información fue actualizada correctamente !</div>');
+          <strong>Realizado !</strong> Su información fue actualizada correctamente !</div>');
       } else {
         echo "<script>location.href='index.php';</script>";
         Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
@@ -356,7 +356,7 @@ public function userLoginAuthotication($data){
       echo "<script>location.href='index.php';</script>";
       Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Dato no desactivado !</div>');
+    <strong>Error !</strong> Usuario no desactivado !</div>');
 
       return $msg;
     }

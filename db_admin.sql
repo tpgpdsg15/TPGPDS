@@ -67,6 +67,7 @@ CREATE TABLE `tbl_users` (
 
 INSERT INTO `tbl_users` (`id`, `name`, `username`, `email`, `password`, `mobile`, `roleid`, `isActive`, `created_at`, `updated_at`) VALUES
 
+(09, 'Sandra ', 'Sandra', 'sandra@gmail.com', '$2y$10$pYB9aKGA9susUsSWcdd5A.2Fu3pCSJaTTXhEkIIdhFB6GtVoZw3r2', '01145678912', 3, 0, '2024-10-21 00:18:33', '2020-03-13 00:18:33'),
 (21, 'Admin ', 'Admin', 'admin@gmail.com', '$2y$10$pYB9aKGA9susUsSWcdd5A.2Fu3pCSJaTTXhEkIIdhFB6GtVoZw3r2', '01145678912', 1, 0, '2024-10-21 00:11:02', '2020-03-13 00:11:02'),
 (22, 'Pablo ', 'Pablo', 'pablo@gmail.com', '$2y$10$pYB9aKGA9susUsSWcdd5A.2Fu3pCSJaTTXhEkIIdhFB6GtVoZw3r2', '01145678912', 1, 0, '2024-10-21 00:13:25', '2020-03-13 00:13:25'),
 (23, 'Diego ', 'Diego', 'diego@gmail.com', '$2y$10$pYB9aKGA9susUsSWcdd5A.2Fu3pCSJaTTXhEkIIdhFB6GtVoZw3r2', '01145678912', 1, 1, '2024-10-21 00:15:51', '2020-03-13 00:15:51'),
