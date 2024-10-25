@@ -421,6 +421,20 @@ public function changePasswordBysingelUserId($userid, $data, $isAdmin) {
     error_log("Password change attempt for user ID: $userid");
     error_log("Is admin: " . ($isAdmin ? "Yes" : "No"));
 
+    $passwordRegex = '/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/';
+
+    $old_password = $data['old_password'];
+    $sql = "SELECT * FROM tbl_users WHERE id = :id LIMIT 1";
+    $stmt = $this->db->pdo->prepare($sql);
+    $stmt->bindValue(':id', $userid);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($user && password_verify($old_password, $user['password'])) {
+    } else {
+        error_log("Error try updating password");
+        return "Ha ocurrido un error al intentar cambiar la contraseña.";
+    }
+
     $new_password = $data['new_password'];
     $confirm_password = $data['confirm_password'];
 
@@ -432,7 +446,6 @@ public function changePasswordBysingelUserId($userid, $data, $isAdmin) {
         return "Las nuevas contraseñas no coinciden.";
     }
 
-    $passwordRegex = '/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/';
     if (!preg_match($passwordRegex, $new_password)) {
         error_log("Password does not meet complexity requirements");
         return "La nueva contraseña no cumple con los requisitos de complejidad.";
