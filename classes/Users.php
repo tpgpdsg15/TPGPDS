@@ -49,6 +49,7 @@ public function checkUnique($field, $value) {
     }
   }
 
+  // Registro de usuario
 public function userRegistration($data){
     $name = $data['name'] ?? '';
     $username = $data['username'] ?? '';
@@ -105,6 +106,8 @@ public function userRegistration($data){
 
     $checkEmail = $this->checkExistEmail($email);
 
+    $passwordRegex = '/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/';
+
     if ($name == "" || $username == "" || $email == "" || $mobile == "" || $password == "") {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -120,7 +123,11 @@ public function userRegistration($data){
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Ingrese solo números en el campo Móvil !</div>';
       return $msg;
-    } elseif (strlen($password) < 8) {
+    } 
+    elseif (!preg_match($passwordRegex, $password)) {
+        return "La contraseña no cumple con los requisitos de complejidad.";
+    }
+    /*elseif (strlen($password) < 8) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> La contraseña deberá tener 8 caracteres !</div>';
@@ -135,7 +142,7 @@ public function userRegistration($data){
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Su contraseña debe tener al menos 1 letra !</div>';
       return $msg;
-    } elseif (filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
+    }*/ elseif (filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <strong>Error !</strong> Correo electrónico inválido !</div>';
@@ -152,8 +159,8 @@ public function userRegistration($data){
       $stmt->bindValue(':name', $name);
       $stmt->bindValue(':username', $username);
       $stmt->bindValue(':email', $email);
-      $stmt->bindValue(':password', SHA1($password));
-     /* $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));*/
+      /*$stmt->bindValue(':password', SHA1($password));*/
+      $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));
       $stmt->bindValue(':mobile', $mobile);
       $stmt->bindValue(':roleid', $roleid);
       $result = $stmt->execute();
@@ -186,8 +193,8 @@ public function userRegistration($data){
   // User login Autho Method
   public function userLoginAutho($email, $password)
   {
-    $password = SHA1($password);
-  /*  $password = password_hash($password, PASSWORD_DEFAULT);*/
+  /*  $password = SHA1($password);*/
+    $password = password_hash($password, PASSWORD_DEFAULT);
     $sql = "SELECT * FROM tbl_users WHERE email = :email and password = :password LIMIT 1";
     $stmt = $this->db->pdo->prepare($sql);
     $stmt->bindValue(':email', $email);
@@ -393,8 +400,8 @@ public function userLoginAuthotication($data){
   // Check Old password method
   public function CheckOldPassword($userid, $old_pass)
   {
-    $old_pass = SHA1($old_pass);
-  /*  $old_pass = password_hash($old_pass, PASSWORD_DEFAULT);*/
+  /*  $old_pass = SHA1($old_pass);*/
+    $old_pass = password_hash($old_pass, PASSWORD_DEFAULT);
     $sql = "SELECT password FROM tbl_users WHERE password = :password AND id =:id";
     $stmt = $this->db->pdo->prepare($sql);
     $stmt->bindValue(':password', $old_pass);
