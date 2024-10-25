@@ -171,11 +171,11 @@ if (isset($activeId)) {
     <?php if (Session::get("roleid") == '1') { ?>
         <a class="btn btn-view" href="profile.php?id=<?php echo $value->id; ?>">Ver</a>
         <a class="btn btn-edit" href="profile.php?id=<?php echo $value->id; ?>">Editar</a>
-        <a onclick="return confirm('¿Está seguro de que desea eliminar?')" class="btn btn-delete <?php if (Session::get("id") == $value->id) echo "disabled"; ?>" href="?remove=<?php echo $value->id; ?>">Eliminar</a>
+        <a onclick="return confirm('¿Está seguro de que desea ELIMINAR este registro?')" class="btn btn-delete <?php if (Session::get("id") == $value->id) echo "disabled"; ?>" href="?remove=<?php echo $value->id; ?>">Eliminar</a>
         <?php if ($value->isActive == '0') { ?>
-            <a onclick="return confirm('¿Está seguro de que desea desactivar?')" class="btn btn-deactivate <?php if (Session::get("id") == $value->id) echo "disabled"; ?>" href="?deactive=<?php echo $value->id; ?>">Desactivar</a>
+            <a onclick="return confirm('Está por desactivar este usuario, confirma?')" class="btn btn-deactivate <?php if (Session::get("id") == $value->id) echo "disabled"; ?>" href="?deactive=<?php echo $value->id; ?>">Desactivar</a>
         <?php } elseif ($value->isActive == '1') { ?>
-            <a onclick="return confirm('¿Está seguro de que desea activar?')" class="btn btn-activate <?php if (Session::get("id") == $value->id) echo "disabled"; ?>" href="?active=<?php echo $value->id; ?>">Activar</a>
+            <a onclick="return confirm('Continue para ACTIVAR este usuario')" class="btn btn-activate <?php if (Session::get("id") == $value->id) echo "disabled"; ?>" href="?active=<?php echo $value->id; ?>">Activar</a>
         <?php } ?>
     <?php } elseif (Session::get("id") == $value->id && Session::get("roleid") == '2') { ?>
         <a class="btn btn-view" href="profile.php?id=<?php echo $value->id; ?>">Ver</a>

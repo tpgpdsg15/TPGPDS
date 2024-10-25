@@ -423,18 +423,19 @@ public function changePasswordBysingelUserId($userid, $data, $isAdmin) {
 
     $passwordRegex = '/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/';
 
-    $old_password = $data['old_password'];
-    $sql = "SELECT * FROM tbl_users WHERE id = :id LIMIT 1";
-    $stmt = $this->db->pdo->prepare($sql);
-    $stmt->bindValue(':id', $userid);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user && password_verify($old_password, $user['password'])) {
-    } else {
-        error_log("Error try updating password");
-        return "Ha ocurrido un error al intentar cambiar la contraseña.";
+    if (!$isAdmin) {
+      $old_password = $data['old_password'];
+      $sql = "SELECT * FROM tbl_users WHERE id = :id LIMIT 1";
+      $stmt = $this->db->pdo->prepare($sql);
+      $stmt->bindValue(':id', $userid);
+      $stmt->execute();
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      if ($user && password_verify($old_password, $user['password'])) {
+      } else {
+          error_log("Error try updating password");
+         return "Ha ocurrido un error al intentar cambiar la contraseña.";
+      }
     }
-
     $new_password = $data['new_password'];
     $confirm_password = $data['confirm_password'];
 
