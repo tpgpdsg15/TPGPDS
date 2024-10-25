@@ -11,21 +11,21 @@ class Users
   // Db Property
   private $db;
 
-  // Db __construct Method
+  // Método Db __construct 
   public function __construct()
   {
     $this->db = new Database();
   }
 
-  // Date formate Method
+  // Método formato fecha 
   public function formatDate($date)
   {
-    // date_default_timezone_set('Asia/Dhaka');
+    // date_default_timezone_set('America/Argentina/Buenos_Aires');
     $strtime = strtotime($date);
     return date('Y-m-d H:i:s', $strtime);
   }
 
-// Check Unique Username Method
+// Método de verificación de usuario único
 public function checkUnique($field, $value) {
     $sql = "SELECT COUNT(*) as count FROM tbl_users WHERE $field = :value";
     $stmt = $this->db->pdo->prepare($sql);
@@ -35,7 +35,7 @@ public function checkUnique($field, $value) {
     return $result['count'] == 0;
 }
 
-  // Check Exist Email Address Method
+  // Método verificador de existencia del email
   public function checkExistEmail($email)
   {
     $sql = "SELECT email from  tbl_users WHERE email = :email";
@@ -94,7 +94,7 @@ public function userRegistration($data){
     }
 }
 
-  // Add New User By Admin
+  // Agregar nuevo usuario por administrador
   public function addNewUserByAdmin($data)
   {
     $name = $data['name'];
@@ -180,7 +180,7 @@ public function userRegistration($data){
 
 
 
-  // Select All User Method
+  // Método para elegir a todos
   public function selectAllUserData()
   {
     $sql = "SELECT * FROM tbl_users ORDER BY id DESC";
@@ -190,7 +190,7 @@ public function userRegistration($data){
   }
 
 
-  // User login Autho Method
+  // Método login usuario
   public function userLoginAutho($email, $password)
   {
   /*  $password = SHA1($password);*/
@@ -202,7 +202,7 @@ public function userRegistration($data){
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_OBJ);
   }
-  // Check User Account Satatus
+  // Verificador del estado del usuario
   public function CheckActiveUser($email)
   {
     $sql = "SELECT * FROM tbl_users WHERE email = :email and isActive = :isActive LIMIT 1";
@@ -238,7 +238,7 @@ public function userLoginAuthotication($data){
 }
 
 
-  // Get Single User Information By Id Method
+  // Método de info de usuario por id
   public function getUserInfoById($userid)
   {
     $sql = "SELECT * FROM tbl_users WHERE id = :id LIMIT 1";
@@ -256,7 +256,7 @@ public function userLoginAuthotication($data){
 
 
   //
-  //   Update Single User Information By Id Method
+  // Método actualizar info de usuario por id
   public function updateUserByIdInfo($userid, $data)
   {
     $name = $data['name'];
@@ -322,7 +322,7 @@ public function userLoginAuthotication($data){
 
 
 
-  // Delete User by Id Method
+  // Método borrado de usuario por id
   public function deleteUserById($remove)
   {
     $sql = "DELETE FROM tbl_users WHERE id = :id ";
@@ -342,7 +342,7 @@ public function userLoginAuthotication($data){
     }
   }
 
-  // User Deactivated By Admin
+  // Usuario desactivado por admin
   public function userDeactiveByAdmin($deactive)
   {
     $sql = "UPDATE tbl_users SET
@@ -370,7 +370,7 @@ public function userLoginAuthotication($data){
   }
 
 
-  // User Activated By Admin
+  // Usuario activado por admin
   public function userActiveByAdmin($active)
   {
     $sql = "UPDATE tbl_users SET
@@ -397,7 +397,7 @@ public function userLoginAuthotication($data){
 
 
 
-  // Check Old password method
+  // Método de verificación de contraseña anterior
   public function CheckOldPassword($userid, $old_pass)
   {
   /*  $old_pass = SHA1($old_pass);*/
@@ -416,7 +416,7 @@ public function userLoginAuthotication($data){
 
 
 
-  // Change User pass By Id
+  // Cambiar contraseña de usuario por id
 public function changePasswordBysingelUserId($userid, $data, $isAdmin) {
     error_log("Password change attempt for user ID: $userid");
     error_log("Is admin: " . ($isAdmin ? "Yes" : "No"));

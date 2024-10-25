@@ -3,14 +3,14 @@
 include "config/config.php";
 
 
-// Class Databse
+// Clase Databse
 
 class  Database{
 
   public $pdo;
 
 
-  // Construct Class
+  // Constructor de Clase
   public function __construct(){
 
     if (!isset($this->pdo)) {
@@ -20,7 +20,7 @@ class  Database{
         $link->exec("SET CHARACTER SET utf8");
         $this->pdo  =  $link;
       } catch (PDOException $e) {
-        die("Connection error...".$e->getMessage());
+        die("Error de conexión...".$e->getMessage());
       }
 
     }

@@ -1,12 +1,12 @@
 <?php
 
-// Class Name: Session
+// Clase Session
 
 class Session
 {
 
 
-  // Session Start Method
+  // Método inicio de sesión
   public static function init()
   {
 
@@ -22,7 +22,7 @@ class Session
   }
 
 
-  // Session Set Method
+  // Método set
   public static function set($key, $val)
   {
     $_SESSION[$key] = $val;
@@ -30,7 +30,7 @@ class Session
 
 
 
-  // Session Get Method
+  // Método get
   public static function get($key)
   {
     if (isset($_SESSION[$key])) {
@@ -40,7 +40,7 @@ class Session
     }
   }
 
-  // User logout Method
+  // Método logout
   public static function destroy()
   {
     session_destroy();
@@ -49,7 +49,7 @@ class Session
   }
 
 
-  // Check Session Method
+  // Método de verificación de sesión
   public static function CheckSession()
   {
     if (self::get('login') == FALSE) {
@@ -59,7 +59,7 @@ class Session
   }
 
 
-  // Check Login Method
+  // Método de verificación de logueo
   public static function CheckLogin()
   {
     if (self::get("login") == TRUE) {

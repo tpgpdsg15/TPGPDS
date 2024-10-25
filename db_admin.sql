@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_roles`
+-- Estructura de la tabla `tbl_roles`
 --
 
 CREATE TABLE `tbl_roles` (
@@ -34,7 +34,7 @@ CREATE TABLE `tbl_roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tbl_roles`
+-- Volcado de datos a la tabla `tbl_roles`
 --
 
 INSERT INTO `tbl_roles` (`id`, `role`) VALUES
@@ -45,7 +45,7 @@ INSERT INTO `tbl_roles` (`id`, `role`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_users`
+-- Estructura de la tabla `tbl_users`
 --
 
 CREATE TABLE `tbl_users` (
@@ -62,7 +62,7 @@ CREATE TABLE `tbl_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `tbl_users`
+-- Volcado de datos a la tabla `tbl_users`
 --
 
 INSERT INTO `tbl_users` (`id`, `name`, `username`, `email`, `password`, `mobile`, `roleid`, `isActive`, `created_at`, `updated_at`) VALUES
@@ -73,33 +73,33 @@ INSERT INTO `tbl_users` (`id`, `name`, `username`, `email`, `password`, `mobile`
 (23, 'Diego ', 'Diego', 'diego@gmail.com', '$2y$10$pYB9aKGA9susUsSWcdd5A.2Fu3pCSJaTTXhEkIIdhFB6GtVoZw3r2', '01145678912', 1, 1, '2024-10-21 00:15:51', '2020-03-13 00:15:51'),
 (24, 'Ariel ', 'Ariel', 'ariel@gmail.com', '$2y$10$pYB9aKGA9susUsSWcdd5A.2Fu3pCSJaTTXhEkIIdhFB6GtVoZw3r2', '01145678912', 3, 0, '2024-10-21 00:18:33', '2020-03-13 00:18:33');
 --
--- Indexes for dumped tables
+-- 
 --
 
 --
--- Indexes for table `tbl_roles`
+-- Identificador para la tabla `tbl_roles`
 --
 ALTER TABLE `tbl_roles`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `tbl_users`
+-- Identificador para la tablae `tbl_users`
 --
 ALTER TABLE `tbl_users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+--
 --
 
 --
--- AUTO_INCREMENT for table `tbl_roles`
+-- AUTO_INCREMENT para la tabla `tbl_roles`
 --
 ALTER TABLE `tbl_roles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'role_id', AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `tbl_users`
+-- AUTO_INCREMENT para la tabla `tbl_users`
 --
 ALTER TABLE `tbl_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
